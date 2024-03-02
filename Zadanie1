@@ -1,0 +1,71 @@
+import pygame
+import math
+
+pygame.init()
+win = pygame.display.set_mode((600, 600))
+pygame.display.set_caption("First Game")
+
+JASNY_NIEBIESKI = (0, 255, 255)
+
+initial_center_x, initial_center_y = 300, 200
+initial_radius = 150
+initial_angle = 360 / 16
+
+current_center_x, current_center_y = initial_center_x, initial_center_y
+current_radius = initial_radius
+current_angle = initial_angle
+
+def draw_hexagon(center_x, center_y, radius):
+    num_sides = 16
+    angle = 360 / num_sides
+    points = []
+    for i in range(num_sides):
+        x = center_x + radius * math.cos(math.radians(angle * i))
+        y = center_y + radius * math.sin(math.radians(angle * i))
+        points.append((x, y))
+    pygame.draw.polygon(win, JASNY_NIEBIESKI, points)
+
+run = True
+while run:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                current_radius /= 2
+            elif event.key == pygame.K_2:
+                current_angle -= math.radians(45)
+            elif event.key == pygame.K_3:
+                current_radius *= 0.5
+                current_angle += math.pi
+            elif event.key == pygame.K_4:
+                current_radius *= 0.65
+            elif event.key == pygame.K_5:
+                current_radius = initial_radius * 0.3
+                current_center_x, current_center_y = initial_center_x, initial_center_y
+                current_angle = initial_angle
+            elif event.key == pygame.K_6:
+                current_angle += math.radians(90)
+                current_radius *= 0.5
+            elif event.key == pygame.K_7:
+                current_radius *= 0.5
+                current_angle += math.pi
+            elif event.key == pygame.K_8:
+                current_angle += math.radians(30)
+                current_radius *= 0.3
+                current_center_x += 200
+            elif event.key == pygame.K_9:
+                current_center_x -= 100
+                current_radius *= 0.75
+                current_angle += math.pi
+            elif event.key == pygame.K_0:
+                current_center_x, current_center_y = initial_center_x, initial_center_y
+                current_radius = initial_radius
+                current_angle = initial_angle
+
+    win.fill((0, 0, 0))
+    draw_hexagon(current_center_x, current_center_y, current_radius)
+    pygame.display.update()
+
+pygame.quit()
